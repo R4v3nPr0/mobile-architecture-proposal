@@ -26,6 +26,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class FavoritesActivity: AppCompatActivity(), FavoritesView {
+    companion object {
+        private const val REQUEST_CODE_MODIFY_FAVORITE = 0
+    }
+
     private lateinit var binding: ActivityFavoritesBinding
     private lateinit var presenter: FavoritesPresenter
 
@@ -49,6 +53,20 @@ class FavoritesActivity: AppCompatActivity(), FavoritesView {
             }
             .create()
             .show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            REQUEST_CODE_MODIFY_FAVORITE -> {
+                if (resultCode == RESULT_OK) {
+                    GlobalScope.launch {
+                        presenter.onReload()
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +114,6 @@ class FavoritesActivity: AppCompatActivity(), FavoritesView {
         val intent = Intent(this, ModifyFavoriteActivity::class.java)
         intent.putExtra(ModifyFavoriteActivity.EXTRA_ID, id)
 
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_CODE_MODIFY_FAVORITE)
     }
 }

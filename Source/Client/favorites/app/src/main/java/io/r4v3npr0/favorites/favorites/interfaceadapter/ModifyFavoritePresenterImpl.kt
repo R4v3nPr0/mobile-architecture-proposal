@@ -48,7 +48,7 @@ class ModifyFavoritePresenterImpl(
         val result = modifyFavoriteInputPort.modifyFavorite(viewState.getFavorite())
 
         if (result.isSuccess) {
-            view.showFavorites()
+            view.back()
         } else {
 
         }

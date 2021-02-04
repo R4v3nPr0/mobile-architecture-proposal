@@ -6,4 +6,5 @@ interface FavoritesPresenter {
     fun onDeleteFavorite(position: Int)
     fun onLoad()
     fun onModifyFavorite(position: Int)
+    fun onReload()
 }

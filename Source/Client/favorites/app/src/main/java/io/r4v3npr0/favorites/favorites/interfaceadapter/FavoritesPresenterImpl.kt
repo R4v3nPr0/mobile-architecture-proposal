@@ -13,9 +13,9 @@ class FavoritesPresenterImpl(
     override fun onDeleteFavorite(position: Int) {
         val favorites = viewState.getFavorites()
         val favorite = favorites[position]
-        val result = deleteFavoriteInputPort.deleteFavorite(favorite.id)
+        val deleteFavoritesResult = deleteFavoriteInputPort.deleteFavorite(favorite.id)
 
-        if (result.isSuccess) {
+        if (deleteFavoritesResult.isSuccess) {
             viewState.setFavorites(favorites.minus(favorite))
         } else {
 
@@ -23,10 +23,10 @@ class FavoritesPresenterImpl(
     }
 
     override fun onLoad() {
-        val result = getFavoritesInputPort.getFavorites()
+        val getFavoritesResult = getFavoritesInputPort.getFavorites()
 
-        if (result.isSuccess) {
-            viewState.setFavorites(result.result!!)
+        if (getFavoritesResult.isSuccess) {
+            viewState.setFavorites(getFavoritesResult.result!!)
         } else {
 
         }
@@ -34,5 +34,15 @@ class FavoritesPresenterImpl(
 
     override fun onModifyFavorite(position: Int) {
         view.showModifyFavorites(viewState.getFavorites()[position].id)
+    }
+
+    override fun onReload() {
+        val getFavoritesResult = getFavoritesInputPort.getFavorites()
+
+        if (getFavoritesResult.isSuccess) {
+            viewState.setFavorites(getFavoritesResult.result!!)
+        } else {
+
+        }
     }
 }

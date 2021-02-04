@@ -109,11 +109,12 @@ class ModifyFavoriteActivity: AppCompatActivity(), ModifyFavoriteView {
         }
     }
 
+    override fun back() {
+        setResult(RESULT_OK)
+        finish()
+    }
+
     override fun getAccountNumber() = binding.accountNumberEditText.text.toString()
 
     override fun getName() = binding.nameEditText.text.toString()
-
-    override fun showFavorites() {
-        finish()
-    }
 }
