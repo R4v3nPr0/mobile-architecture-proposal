@@ -129,7 +129,7 @@ router.put('/:id', function (request, response) {
     FavoritesModel.findById(
         request.params.id,
         function (error, result) {
-            if (typeof request.body.accoundNumber !== 'undefined') {
+            if (typeof request.body.accountNumber !== 'undefined') {
                 result.accountNumber = request.body.accountNumber
             }
 
