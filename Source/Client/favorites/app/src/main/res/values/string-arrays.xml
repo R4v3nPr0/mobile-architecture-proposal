@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="favorites_context_options">
+        <item>Modificar</item>
+        <item>Eliminar</item>
+    </string-array>
+</resources>

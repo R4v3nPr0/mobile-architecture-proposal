@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_number">Número de cuenta</string>
+    <string name="add">Añadir</string>
+    <string name="app_name">Favorites</string>
+    <string name="delete">Eliminar</string>
+    <string name="modify">Modificar</string>
+    <string name="name">Nombre</string>
+    <string name="save">Guardar</string>
+</resources>
