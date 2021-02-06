@@ -16,12 +16,10 @@ class GetFavoritesUseCase(
 ): GetFavoritesInputPort
 {
     override fun getFavorites(): Result<List<FavoriteModel>, Throwable> {
-        var result: Result<List<FavoriteModel>, Throwable>
-
-        if (isFavoritesEmptyDataOutputPort.isEmpty()) {
+        return if (isFavoritesEmptyDataOutputPort.isEmpty()) {
             val getFavoritesServiceResult = getFavoritesServiceOutputPort.getFavorites()
 
-            result = if (getFavoritesServiceResult.isSuccess) {
+             if (getFavoritesServiceResult.isSuccess) {
                 val saveFavoritesDataResult =
                     saveFavoritesDataOutputPort.saveFavorites(getFavoritesServiceResult.result!!)
 
@@ -36,13 +34,11 @@ class GetFavoritesUseCase(
         } else {
             val getFavoritesDataResult = getFavoritesDataOutputPort.getFavorites()
 
-            result = if (getFavoritesDataResult.isSuccess) {
+            if (getFavoritesDataResult.isSuccess) {
                 Result.success(getFavoritesDataResult.result!!)
             } else {
                 Result.failure(getFavoritesDataResult.failure!!)
             }
         }
-
-        return result
     }
 }

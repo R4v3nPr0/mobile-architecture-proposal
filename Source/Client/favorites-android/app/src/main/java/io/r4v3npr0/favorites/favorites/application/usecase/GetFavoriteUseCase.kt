@@ -10,14 +10,11 @@ class GetFavoriteUseCase(
 ): GetFavoriteInputPort {
     override fun getFavorite(id: String): Result<FavoriteModel, Throwable> {
         val getFavoriteDataResult = getFavoriteDataOutputPort.getFavorite(id)
-        var result: Result<FavoriteModel, Throwable>
 
-        result = if (getFavoriteDataResult.isSuccess) {
+        return if (getFavoriteDataResult.isSuccess) {
             Result.success(getFavoriteDataResult.result!!)
         } else {
             Result.failure(getFavoriteDataResult.failure!!)
         }
-
-        return result
     }
 }

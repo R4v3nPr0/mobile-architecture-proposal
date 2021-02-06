@@ -11,9 +11,8 @@ class DeleteFavoriteUseCase(
 ): DeleteFavoriteInputPort {
     override fun deleteFavorite(id: String): Result<String, Throwable> {
         val deleteFavoriteServiceResult = deleteFavoriteServiceOutputPort.deleteFavorite(id)
-        var result: Result<String, Throwable>
 
-        result = if (deleteFavoriteServiceResult.isSuccess) {
+        return if (deleteFavoriteServiceResult.isSuccess) {
             val deleteFavoriteDataResult = deleteFavoriteDataOutputPort.deleteFavorite(id)
 
             if (deleteFavoriteDataResult.isSuccess) {
@@ -24,7 +23,5 @@ class DeleteFavoriteUseCase(
         } else {
             Result.failure(deleteFavoriteServiceResult.failure!!)
         }
-
-        return result
     }
 }

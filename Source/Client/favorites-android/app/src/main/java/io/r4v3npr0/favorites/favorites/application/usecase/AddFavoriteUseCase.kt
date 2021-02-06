@@ -15,15 +15,15 @@ class AddFavoriteUseCase(
     override fun addFavorite(favorite: FavoriteModel): Result<Boolean, Throwable> {
         val addFavoriteServiceResult = addFavoriteServiceOutputPort.addFavorite(favorite)
 
-        if (addFavoriteServiceResult.isSuccess) {
+        return if (addFavoriteServiceResult.isSuccess) {
             val id = addFavoriteServiceResult.result!!
 
             val getFavoriteServiceResult = getFavoriteServiceOutputPort.getFavorite(id)
 
-            return if (getFavoriteServiceResult.isSuccess) {
-                val favorite = getFavoriteServiceResult.result!!
+            if (getFavoriteServiceResult.isSuccess) {
+                val favoriteServiceResult = getFavoriteServiceResult.result!!
 
-                val addFavoriteDataResult = addFavoriteDataOutputPort.addFavorite(favorite)
+                val addFavoriteDataResult = addFavoriteDataOutputPort.addFavorite(favoriteServiceResult)
 
                 if (addFavoriteDataResult.isSuccess) {
                     Result.success(true)

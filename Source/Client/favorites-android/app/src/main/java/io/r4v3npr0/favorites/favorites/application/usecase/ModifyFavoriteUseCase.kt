@@ -14,15 +14,14 @@ class ModifyFavoriteUseCase(
 ): ModifyFavoriteInputPort {
     override fun modifyFavorite(favorite: FavoriteModel): Result<String, Throwable> {
         val modifyFavoriteServiceResult = modifyFavoriteServiceOutputPort.modifyFavorite(favorite)
-        var result: Result<String, Throwable>
 
-        if (modifyFavoriteServiceResult.isSuccess) {
-            val success = modifyFavoriteServiceResult.result!!
+        return if (modifyFavoriteServiceResult.isSuccess) {
+            val modifyFavoriteResult = modifyFavoriteServiceResult.result!!
 
-            if (success) {
+            if (modifyFavoriteResult) {
                 val getFavoriteServiceResult = getFavoriteServiceOutputPort.getFavorite(favorite.id)
 
-                result = if (getFavoriteServiceResult.isSuccess) {
+                if (getFavoriteServiceResult.isSuccess) {
                     val modifyFavoriteDataResult =
                         modifyFavoriteDataOutputPort.modifyFavorite(getFavoriteServiceResult.result!!)
 
@@ -35,12 +34,10 @@ class ModifyFavoriteUseCase(
                     Result.failure(getFavoriteServiceResult.failure!!)
                 }
             } else {
-                result = Result.failure(Throwable("Ocurrió un error"))
+                Result.failure(Throwable("Ocurrió un error"))
             }
         } else {
-            result = Result.failure(modifyFavoriteServiceResult.failure!!)
+            Result.failure(modifyFavoriteServiceResult.failure!!)
         }
-
-        return result
     }
 }
