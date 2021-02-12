@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="favorites_context_options">
+    <string-array name="account_types">
+        <item>Número de Cuenta</item>
+        <item>SPEI</item>
+        <item>Tarjeta de Crédito</item>
+        <item>Tarjeta de Débito</item>
+    </string-array>
+
+    <string-array name="favorites_context_menu_options">
         <item>Modificar</item>
         <item>Eliminar</item>
     </string-array>

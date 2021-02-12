@@ -45,7 +45,7 @@ class FavoritesActivity: AppCompatActivity(), FavoritesView {
 
     private val favoritesOnItemLongClickListener = RecyclerViewBase.OnItemLongClickListener {
         AlertDialog.Builder(this)
-            .setItems(R.array.favorites_context_options) { _, position ->
+            .setItems(R.array.favorites_context_menu_options) { _, position ->
                 GlobalScope.launch {
                     when (position) {
                         0 -> presenter.onModifyFavorite(it)
@@ -93,6 +93,7 @@ class FavoritesActivity: AppCompatActivity(), FavoritesView {
                 retrofitFavoritesServicesGateway
             ),
             GetFavoritesUseCase(
+                realmFavoritesDataGateway,
                 realmFavoritesDataGateway,
                 retrofitFavoritesServicesGateway,
                 realmFavoritesDataGateway,

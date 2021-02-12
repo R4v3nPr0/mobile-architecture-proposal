@@ -42,6 +42,18 @@ class RealmFavoritesDataGateway: FavoritesDataGateway {
         return result
     }
 
+    override fun deleteFavorites(): Result<Boolean, Throwable> {
+        runBlocking(Dispatchers.Main) {
+            realm.apply {
+                beginTransaction()
+                where(FavoriteRealmModel::class.java).findAll().deleteAllFromRealm()
+                commitTransaction()
+            }
+        }
+
+        return Result.success(true)
+    }
+
     override fun getFavorite(id: String): Result<FavoriteModel, Throwable> {
         var result: Result<FavoriteModel, Throwable>
 
@@ -80,14 +92,14 @@ class RealmFavoritesDataGateway: FavoritesDataGateway {
         return result
     }
 
-    override fun isEmpty(): Boolean {
-        var isEmpty: Boolean
+    override fun isEmpty(): Result<Boolean, Throwable> {
+        var result: Result<Boolean, Throwable>
 
         runBlocking(Dispatchers.Main) {
-            isEmpty = realm.where(FavoriteRealmModel::class.java).count().toInt() == 0
+            result = Result.success(realm.where(FavoriteRealmModel::class.java).count().toInt() == 0)
         }
 
-        return isEmpty
+        return result
     }
 
     override fun modifyFavorite(favorite: FavoriteModel): Result<Boolean, Throwable> {

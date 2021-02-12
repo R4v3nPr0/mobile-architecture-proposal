@@ -27,7 +27,7 @@ class FavoritesPresenterImpl(
     }
 
     override fun onLoad() {
-        val getFavoritesResult = getFavoritesInputPort.getFavorites()
+        val getFavoritesResult = getFavoritesInputPort.getFavorites(false)
 
         if (getFavoritesResult.isSuccess) {
             viewState.setFavorites(getFavoritesResult.result!!)
@@ -41,7 +41,7 @@ class FavoritesPresenterImpl(
     }
 
     override fun onReload() {
-        val getFavoritesResult = getFavoritesInputPort.getFavorites()
+        val getFavoritesResult = getFavoritesInputPort.getFavorites(true)
 
         if (getFavoritesResult.isSuccess) {
             viewState.setFavorites(getFavoritesResult.result!!)

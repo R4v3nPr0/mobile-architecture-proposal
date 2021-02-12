@@ -9,14 +9,14 @@ class DeleteFavoriteUseCase(
     private val deleteFavoriteDataOutputPort: DeleteFavoriteDataOutputPort,
     private val deleteFavoriteServiceOutputPort: DeleteFavoriteServiceOutputPort
 ): DeleteFavoriteInputPort {
-    override fun deleteFavorite(id: String): Result<String, Throwable> {
+    override fun deleteFavorite(id: String): Result<Boolean, Throwable> {
         val deleteFavoriteServiceResult = deleteFavoriteServiceOutputPort.deleteFavorite(id)
 
         return if (deleteFavoriteServiceResult.isSuccess) {
             val deleteFavoriteDataResult = deleteFavoriteDataOutputPort.deleteFavorite(id)
 
             if (deleteFavoriteDataResult.isSuccess) {
-                Result.success(deleteFavoriteDataResult.result!!)
+                Result.success(true)
             } else {
                 Result.failure(deleteFavoriteDataResult.failure!!)
             }

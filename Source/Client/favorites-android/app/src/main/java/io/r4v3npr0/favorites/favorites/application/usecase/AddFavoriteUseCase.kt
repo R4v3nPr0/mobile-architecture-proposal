@@ -16,14 +16,10 @@ class AddFavoriteUseCase(
         val addFavoriteServiceResult = addFavoriteServiceOutputPort.addFavorite(favorite)
 
         return if (addFavoriteServiceResult.isSuccess) {
-            val id = addFavoriteServiceResult.result!!
-
-            val getFavoriteServiceResult = getFavoriteServiceOutputPort.getFavorite(id)
+            val getFavoriteServiceResult = getFavoriteServiceOutputPort.getFavorite(addFavoriteServiceResult.result!!)
 
             if (getFavoriteServiceResult.isSuccess) {
-                val favoriteServiceResult = getFavoriteServiceResult.result!!
-
-                val addFavoriteDataResult = addFavoriteDataOutputPort.addFavorite(favoriteServiceResult)
+                val addFavoriteDataResult = addFavoriteDataOutputPort.addFavorite(getFavoriteServiceResult.result!!)
 
                 if (addFavoriteDataResult.isSuccess) {
                     Result.success(true)

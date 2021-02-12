@@ -21,6 +21,17 @@ class ModifyFavoritePresenterImpl(
         ))
     }
 
+    override fun onAccountTypeChange() {
+        val favorite = viewState.getFavorite()
+
+        viewState.setFavorite(FavoriteModel(
+            favorite.id,
+            favorite.accountNumber,
+            view.getAccountType(),
+            favorite.name
+        ))
+    }
+
     override fun onLoad(id: String) {
         val result = getFavoriteInputPort.getFavorite(id)
 

@@ -12,29 +12,22 @@ class ModifyFavoriteUseCase(
     private val modifyFavoriteDataOutputPort: ModifyFavoriteDataOutputPort,
     private val modifyFavoriteServiceOutputPort: ModifyFavoriteServiceOutputPort
 ): ModifyFavoriteInputPort {
-    override fun modifyFavorite(favorite: FavoriteModel): Result<String, Throwable> {
+    override fun modifyFavorite(favorite: FavoriteModel): Result<Boolean, Throwable> {
         val modifyFavoriteServiceResult = modifyFavoriteServiceOutputPort.modifyFavorite(favorite)
 
         return if (modifyFavoriteServiceResult.isSuccess) {
-            val modifyFavoriteResult = modifyFavoriteServiceResult.result!!
+            val getFavoriteServiceResult = getFavoriteServiceOutputPort.getFavorite(favorite.id)
 
-            if (modifyFavoriteResult) {
-                val getFavoriteServiceResult = getFavoriteServiceOutputPort.getFavorite(favorite.id)
+            if (getFavoriteServiceResult.isSuccess) {
+                val modifyFavoriteDataResult = modifyFavoriteDataOutputPort.modifyFavorite(getFavoriteServiceResult.result!!)
 
-                if (getFavoriteServiceResult.isSuccess) {
-                    val modifyFavoriteDataResult =
-                        modifyFavoriteDataOutputPort.modifyFavorite(getFavoriteServiceResult.result!!)
-
-                    if (modifyFavoriteDataResult.isSuccess) {
-                        Result.success(getFavoriteServiceResult.result!!.id)
-                    } else {
-                        Result.failure(modifyFavoriteDataResult.failure!!)
-                    }
+                if (modifyFavoriteDataResult.isSuccess) {
+                    Result.success(true)
                 } else {
-                    Result.failure(getFavoriteServiceResult.failure!!)
+                    Result.failure(modifyFavoriteDataResult.failure!!)
                 }
             } else {
-                Result.failure(Throwable("Ocurrió un error"))
+                Result.failure(getFavoriteServiceResult.failure!!)
             }
         } else {
             Result.failure(modifyFavoriteServiceResult.failure!!)
