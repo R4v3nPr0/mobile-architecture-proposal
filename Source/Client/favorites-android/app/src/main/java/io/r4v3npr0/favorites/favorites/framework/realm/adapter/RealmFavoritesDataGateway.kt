@@ -17,7 +17,13 @@ class RealmFavoritesDataGateway: FavoritesDataGateway {
     private val realm = Realm.getDefaultInstance()
 
     override fun addFavorite(favorite: FavoriteModel): Result<Boolean, Throwable> {
-        val result: Result<Boolean, Throwable>
+        runBlocking(Dispatchers.Main) {
+            realm.apply {
+                beginTransaction()
+                copyToRealm(FavoritesConverter.convertToRealmModel(favorite))
+                commitTransaction()
+            }
+        }
 
         return Result.success(true)
     }

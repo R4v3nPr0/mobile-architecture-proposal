@@ -17,6 +17,7 @@ import io.r4v3npr0.favorites.favorites.application.model.FavoriteModel
 import io.r4v3npr0.favorites.favorites.application.usecase.DeleteFavoriteUseCase
 import io.r4v3npr0.favorites.favorites.application.usecase.GetFavoritesUseCase
 import io.r4v3npr0.favorites.favorites.framework.android.base.RecyclerViewBase
+import io.r4v3npr0.favorites.favorites.framework.android.ui.addfavorite.AddFavoriteActivity
 import io.r4v3npr0.favorites.favorites.framework.android.ui.modifiyfavorite.ModifyFavoriteActivity
 import io.r4v3npr0.favorites.favorites.framework.realm.adapter.RealmFavoritesDataGateway
 import io.r4v3npr0.favorites.favorites.framework.retrofit.adapter.RetrofitFavoritesServicesGateway
@@ -28,8 +29,8 @@ import kotlinx.coroutines.launch
 
 class FavoritesActivity: AppCompatActivity(), FavoritesView {
     companion object {
-        private const val REQUEST_CODE_ADD_FAVORITE = 1
-        private const val REQUEST_CODE_MODIFY_FAVORITE = 0
+        private const val REQUEST_CODE_ADD_FAVORITE = 0
+        private const val REQUEST_CODE_MODIFY_FAVORITE = 1
     }
 
     private lateinit var binding: ActivityFavoritesBinding
@@ -61,7 +62,7 @@ class FavoritesActivity: AppCompatActivity(), FavoritesView {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            REQUEST_CODE_MODIFY_FAVORITE -> {
+            REQUEST_CODE_ADD_FAVORITE, REQUEST_CODE_MODIFY_FAVORITE -> {
                 if (resultCode == RESULT_OK) {
                     GlobalScope.launch {
                         presenter.onReload()
@@ -123,12 +124,20 @@ class FavoritesActivity: AppCompatActivity(), FavoritesView {
                 true
             }
 
+            R.id.reload -> {
+                GlobalScope.launch {
+                    presenter.onReload()
+                }
+
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     override fun showAddFavorite() {
-        //startActivityForResult(Intent(this, ), REQUEST_CODE_ADD_FAVORITE)
+        startActivityForResult(Intent(this, AddFavoriteActivity::class.java), REQUEST_CODE_ADD_FAVORITE)
     }
 
     override fun showModifyFavorites(id: String) {

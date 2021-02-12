@@ -3,6 +3,9 @@ package io.r4v3npr0.favorites.favorites.framework.android.ui.addfavorite
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -20,6 +23,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AddFavoriteActivity: AppCompatActivity(), AddFavoriteView {
+    private lateinit var accountTypesAdapter: ArrayAdapter<String>
     private lateinit var binding: ActivityAddFavoriteBinding
     private lateinit var presenter: AddFavoritePresenter
 
@@ -39,9 +43,22 @@ class AddFavoriteActivity: AppCompatActivity(), AddFavoriteView {
         }
     }
 
+    private val accountTypeOnItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+        selectedAccountType = position
+
+        GlobalScope.launch {
+            presenter.onAccountTypeChange()
+        }
+    }
+
     private val favoriteObserver = Observer<FavoriteModel> {
         if (binding.accountNumberEditText.text.toString() != it.accountNumber) {
             binding.accountNumberEditText.setText(it.accountNumber)
+        }
+
+        if (selectedAccountType != it.accountType) {
+            binding.accountTypeAutoCompleteTextView.setText(accountTypesAdapter.getItem(it.accountType), false)
+            selectedAccountType = it.accountType
         }
 
         if (binding.nameEditText.text.toString() != it.name) {
@@ -51,7 +68,9 @@ class AddFavoriteActivity: AppCompatActivity(), AddFavoriteView {
 
     private val nameTextWatcher = object: TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            presenter.onNameTextChange()
+            GlobalScope.launch {
+                presenter.onNameTextChange()
+            }
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -63,12 +82,29 @@ class AddFavoriteActivity: AppCompatActivity(), AddFavoriteView {
         }
     }
 
+    private val saveOnClickListener = View.OnClickListener {
+        GlobalScope.launch {
+            presenter.onSave()
+        }
+    }
+
+    private var selectedAccountType = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_favorite)
         binding.accountNumberEditText.addTextChangedListener(accountNumberTextWatcher)
+        binding.accountTypeAutoCompleteTextView.setAdapter(ArrayAdapter(
+            this,
+            android.R.layout.simple_list_item_1,
+            resources.getStringArray(R.array.account_types)
+        ))
+        binding.accountTypeAutoCompleteTextView.onItemClickListener = accountTypeOnItemClickListener
         binding.nameEditText.addTextChangedListener(nameTextWatcher)
+        binding.saveButton.setOnClickListener(saveOnClickListener)
+
+        accountTypesAdapter = binding.accountTypeAutoCompleteTextView.adapter as ArrayAdapter<String>
 
         val viewModel = ViewModelProvider(this).get(AddFavoriteViewModel::class.java)
         viewModel.favorite.observe(this, favoriteObserver)
@@ -88,10 +124,13 @@ class AddFavoriteActivity: AppCompatActivity(), AddFavoriteView {
     }
 
     override fun back() {
-        TODO("Not yet implemented")
+        setResult(RESULT_OK)
+        finish()
     }
 
     override fun getAccountNumber() = binding.accountNumberEditText.text.toString()
+
+    override fun getAccountType() = selectedAccountType
 
     override fun getName() = binding.nameEditText.text.toString()
 }

@@ -7,5 +7,6 @@
     <string name="delete">Eliminar</string>
     <string name="modify">Modificar</string>
     <string name="name">Nombre</string>
+    <string name="realod">Recargar</string>
     <string name="save">Guardar</string>
 </resources>

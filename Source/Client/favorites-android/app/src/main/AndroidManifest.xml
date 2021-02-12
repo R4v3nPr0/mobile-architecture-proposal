@@ -15,11 +15,17 @@
         android:theme="@style/Theme.Favorites"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".favorites.framework.android.ui.favorites.FavoritesActivity">
+        <activity
+            android:name=".favorites.framework.android.ui.addfavorite.AddFavoriteActivity" />
+
+        <activity
+            android:name=".favorites.framework.android.ui.favorites.FavoritesActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity

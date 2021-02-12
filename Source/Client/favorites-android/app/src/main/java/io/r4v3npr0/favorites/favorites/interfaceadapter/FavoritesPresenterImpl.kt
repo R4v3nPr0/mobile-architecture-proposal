@@ -11,7 +11,7 @@ class FavoritesPresenterImpl(
 ): FavoritesPresenter
 {
     override fun onAdd() {
-
+        view.showAddFavorite()
     }
 
     override fun onDeleteFavorite(position: Int) {

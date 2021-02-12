@@ -3,18 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="accountNumber"
-            type="String" />
-
-        <variable
-            name="name"
-            type="String" />
-
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent">
@@ -25,7 +13,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="32dp"
             android:layout_width="0dp"
-            app:layout_constraintBottom_toTopOf="@id/account_number_text_input_layout"
+            app:layout_constraintBottom_toTopOf="@id/account_type_text_input_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" >
@@ -33,8 +21,27 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name_edit_text"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="@{name}"/>
+                android:layout_width="match_parent" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:hint="@string/account_type"
+            android:id="@+id/account_type_text_input_layout"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toTopOf="@id/account_number_text_input_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name_text_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:focusable="false"
+                android:id="@+id/account_type_auto_complete_text_view"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,14 +54,13 @@
             app:layout_constraintBottom_toTopOf="@id/save_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/name_text_input_layout">
+            app:layout_constraintTop_toBottomOf="@id/account_type_text_input_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/account_number_edit_text"
                 android:inputType="number"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:text="@{accountNumber}"/>
+                android:layout_width="match_parent" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

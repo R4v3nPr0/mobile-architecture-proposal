@@ -8,6 +8,10 @@ import io.r4v3npr0.favorites.favorites.interfaceadapter.AddFavoriteViewState
 class AddFavoriteViewModel: ViewModel(), AddFavoriteViewState {
     val favorite: MutableLiveData<FavoriteModel> = MutableLiveData()
 
+    init {
+        favorite.postValue(FavoriteModel())
+    }
+
     override fun getFavorite() = favorite.value!!
 
     override fun setFavorite(favorite: FavoriteModel) {
